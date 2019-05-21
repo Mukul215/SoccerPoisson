@@ -120,7 +120,6 @@ def argentina():
         '34': 'Talleres Cordoba',
         '35': 'Chacarita Juniors',
         '36': 'San Martin T.'
-
     }
 
     df = pd.read_csv("http://www.football-data.co.uk/new/ARG.csv")
@@ -129,8 +128,15 @@ def argentina():
     df_include = df[df['Date'].dt.year >= 2018]
     df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
 
-    homeTeam = 'Huracan'
-    awayTeam = 'Union de Santa Fe'
+    print("Please pick home and away team:\n")
+    for ref, team in argentina_teams.items():
+        print(ref, ":", team)
+
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    homeTeam = argentina_teams[homeChoice]
+    awayTeam = argentina_teams[awayChoice]
 
     calculate_model(df_calculate, homeTeam, awayTeam)
 
@@ -205,13 +211,13 @@ def calculate_model(df_calculate, homeTeam, awayTeam):
     moneylineOver35 = moneylineConverter(over35)
     decimalOver35 = oddsConverter(over35)
     moneylineUnder35 = moneylineConverter(under35)
-    decimalUnder35 = oddsConverter(over35)
+    decimalUnder35 = oddsConverter(under35)
 
-    print(poisson_model.summary())
-    print("Home team: {}".format(home_team))
-    print("Away team: {}\n\n".format(away_team))
-    print(np.outer(np.array(team_pred[0]), np.array(team_pred[1])))
-    print("\n\n\nImplied Probability {} Wins: {:.2%}".format(homeTeam, homeWin))
+    # print(poisson_model.summary())
+    print("\n\nHome team: {}".format(home_team))
+    print("Away team: {}".format(away_team))
+    #print(np.outer(np.array(team_pred[0]), np.array(team_pred[1])))
+    print("\nImplied Probability {} Wins: {:.2%}".format(homeTeam, homeWin))
     print("Implied Probability of Draw: {:.2%}".format(outcomeDraw))
     print("Implied Probability {} Wins: {:.2%}".format(awayTeam, awayWin))
     print(
@@ -223,12 +229,12 @@ def calculate_model(df_calculate, homeTeam, awayTeam):
         "Implied Probability Game Total is Under 3.5: {:.2%}".format(under35))
     print("Implied Probability Game Total is Exactly 3: {:.2%}".format(exact3))
     print("Implied Probability Game Total is Over 3.5: {:.2%}".format(over35))
-    print("\n\nFair Value of Home Team Wins: {} and odds at: {}".format(
-        moneylineHome, decimalHome))
+    print("\n\nFair Value of {} Wins: {} and odds at: {}".format(homeTeam,
+                                                                 moneylineHome, decimalHome))
     print("Fair Value of Draw: {} and odds at: {}".format(
         moneylineDraw, decimalDraw))
-    print("Fair Value of Away Team Wins: {} and odds at: {}".format(
-        moneylineAway, decimalAway))
+    print("Fair Value of {} Wins: {} and odds at: {}".format(awayTeam,
+                                                             moneylineAway, decimalAway))
     print("Fair Value of Game Total Under 2.5: {} and odds at: {}".format(
         moneylineUnder25, decimalUnder25))
     print("Fair Value of Game Total Exactly 2: {} and odds at: {}".format(
