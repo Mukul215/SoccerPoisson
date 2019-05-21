@@ -79,7 +79,7 @@ def exec_menu(choice):
             print("Invalid selection, please try again.\n")
             menu_actions['main_menu']()
 
-# Argentina Menu
+# ARGENTINA
 
 
 def argentina():
@@ -128,28 +128,198 @@ def argentina():
     df_include = df[df['Date'].dt.year >= 2018]
     df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
 
+    # print out all the teams
     print("Please pick home and away team:\n")
     for ref, team in argentina_teams.items():
         print(ref, ":", team)
 
+    # input team
     homeChoice = input("Home Team Number: ")
     awayChoice = input("Away Team Number: ")
 
+    # assign teams the object value within the dictionary
     homeTeam = argentina_teams[homeChoice]
     awayTeam = argentina_teams[awayChoice]
 
-    calculate_model(df_calculate, homeTeam, awayTeam)
-
-
-# CALCULATION OF MODEL OUTPUTS
-
-
-def calculate_model(df_calculate, homeTeam, awayTeam):
     goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
         columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
         df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
         columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
 
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# AUSTRIA
+
+
+def austria():
+    austria_teams = {
+        '1': 'AC Wolfsberger',
+        '2': 'Admira',
+        '3': 'Altach',
+        '4': 'Austria Vienna',
+        '5': 'Grodig',
+        '6': 'Hartberg',
+        '7': 'LASK Linz',
+        '8': 'Mattersburg',
+        '9': 'Neustadt',
+        '10': 'Rapid Vienna',
+        '11': 'Ried',
+        '12': 'Salzburg',
+        '13': 'St. Polten',
+        '14': 'Sturm Graz',
+        '15': 'Wacker Innsbruck'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/new/AUT.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in austria_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = austria_teams[homeChoice]
+    awayTeam = austria_teams[awayChoice]
+
+    goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
+        columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
+        df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
+        columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# BELGIUM
+
+
+def belgium():
+    belgium_teams = {
+        '1': 'Anderlecht',
+        '2': 'Antwerp',
+        '3': 'Cercle Brugge',
+        '4': 'Charleroi',
+        '5': 'Club Brugge',
+        '6': 'Eupen',
+        '7': 'Genk',
+        '8': 'Gent',
+        '9': 'Kortrijk',
+        '10': 'Lokeren',
+        '11': 'Mouscron',
+        '12': 'Oostende',
+        '13': 'St Truiden',
+        '14': 'Standard',
+        '15': 'Waasland-Beveren',
+        '16': 'Waregem'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/1819/B1.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'HomeTeam',
+                               'AwayTeam', 'FTHG', 'FTAG', 'FTR']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in belgium_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = belgium_teams[homeChoice]
+    awayTeam = belgium_teams[awayChoice]
+
+    goal_model_data = pd.concat([df_calculate[['HomeTeam', 'AwayTeam', 'FTHG']].assign(home=1).rename(
+        columns={'HomeTeam': 'team', 'AwayTeam': 'opponent', 'FTHG': 'goals'}),
+        df_calculate[['AwayTeam', 'HomeTeam', 'FTAG']].assign(home=0).rename(
+        columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'FTAG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+
+# BRAZIL
+
+
+def brazil():
+    brazil_teams = {
+        '1': 'America MG',
+        '2': 'Athletico-PR',
+        '3': 'Atletico GO',
+        '4': 'Atletico-MG',
+        '5': 'Atletico-PR',
+        '6': 'Avai',
+        '7': 'Bahia',
+        '8': 'Botafogo RJ',
+        '9': 'Ceara',
+        '10': 'Chapecoense-SC',
+        '11': 'Corinthians',
+        '12': 'Coritiba',
+        '13': 'Criciuma',
+        '14': 'Cruzeiro',
+        '15': 'CSA',
+        '16': 'Figueirense',
+        '17': 'Flamengo RJ',
+        '18': 'Fluminense',
+        '19': 'Fortaleza',
+        '20': 'Goias',
+        '21': 'Gremio',
+        '22': 'Internacional',
+        '23': 'Joinville',
+        '24': 'Nautico',
+        '25': 'Palmeiras',
+        '26': 'Parana',
+        '27': 'Ponte Preta',
+        '28': 'Portuguesa',
+        '29': 'Santa Cruz',
+        '30': 'Santos',
+        '31': 'Sao Paulo',
+        '32': 'Sport Recife',
+        '33': 'Vasco',
+        '34': 'Vitoria'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/new/BRA.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in brazil_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = brazil_teams[homeChoice]
+    awayTeam = brazil_teams[awayChoice]
+
+    # assign teams the object value within the dictionary
+    goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
+        columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
+        df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
+        columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+
+# CALCULATION OF MODEL OUTPUTS
+
+
+def calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data):
     # calculate poisson model
     poisson_model = smf.glm(formula="goals ~ home + team + opponent", data=goal_model_data,
                             family=sm.families.Poisson()).fit()
@@ -249,6 +419,7 @@ def calculate_model(df_calculate, homeTeam, awayTeam):
         moneylineOver35, decimalOver35))
     print("\n\nPlease check betfair exchanges for the most accurate lines\n\n\n")
 
+
 # Convert moneyline and adds from imlied value to fair value
 
 
@@ -277,9 +448,9 @@ def exit():
 menu_actions = {
     'main_menu': main_menu,
     '1': argentina,
-    # '2': austria,
-    # '3': belgium,
-    # '4': brazil,
+    '2': austria,
+    '3': belgium,
+    '4': brazil,
     # '5': china,
     # '6': denmark,
     # '7': england,
