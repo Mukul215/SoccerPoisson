@@ -1,7 +1,5 @@
 import sys
 import os
-# TODO: Create a seperate file to incorporate the variables and objects
-# import teams
 import datetime as dt
 import pandas as pd
 import statsmodels.api as sm  # needed for Poisson regression model
@@ -11,14 +9,7 @@ from scipy.stats import poisson, skellam
 
 # Main definition - constants
 menu_actions = {}
-# season_year = 1819
-
-# data = pd.read_csv("http://www.football-data.co.uk/mmz4281/{}/E0.csv".format(
-#     season_year))
-
-# show first 4 for testing purposes and display success message
-# print(data[:4])
-# print('\nThe program has run successfully...\n')
+season_year = "1819"
 
 # =======================
 #     MENUS FUNCTIONS
@@ -219,7 +210,8 @@ def belgium():
         '16': 'Waregem'
     }
 
-    df = pd.read_csv("http://www.football-data.co.uk/mmz4281/1819/B1.csv")
+    df = pd.read_csv(
+        "http://www.football-data.co.uk/mmz4281/{}/B1.csv".format(season_year))
 
     df['Date'] = pd.to_datetime(df['Date'])
     df_include = df[df['Date'].dt.year >= 2018]
@@ -245,7 +237,6 @@ def belgium():
         columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'FTAG': 'goals'})])
 
     calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
-
 
 # BRAZIL
 
@@ -312,6 +303,454 @@ def brazil():
         columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
         df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
         columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# CHINA
+
+
+def china():
+    china_teams = {
+        '1': 'Beijing Guoan',
+        '2': 'Beijing Renhe',
+        '3': 'Changchun Yatai',
+        '4': 'Chongqing Lifan',
+        '5': 'Dalian Yifang F.C.',
+        '6': 'Guangzhou Evergrande',
+        '7': 'Guangzhou R&F',
+        '8': 'Guizhou Zhicheng',
+        '9': 'Hangzhou Greentown',
+        '10': 'Hebei',
+        '11': 'Henan Jianye',
+        '12': 'Jiangsu Suning',
+        '13': 'Liaoning',
+        '14': 'Shandong Luneng',
+        '15': 'Shanghai Shenhua',
+        '16': 'Shanghai Shenxin',
+        '17': 'Shanghai SIPG',
+        '18': 'Shenzhen',
+        '19': 'Shijiazhuang',
+        '20': 'Tianjin Quanjian',
+        '21': 'Tianjin Teda',
+        '22': 'Tianjin Tianhai',
+        '23': 'Wuhan Zall',
+        '24': 'Yanbian',
+        '25': 'Zhejiang Yiteng'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/new/CHN.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in china_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = china_teams[homeChoice]
+    awayTeam = china_teams[awayChoice]
+
+    # assign teams the object value within the dictionary
+    goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
+        columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
+        df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
+        columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# DENMARK
+
+
+def denmark():
+    denmark_teams = {
+        '1': 'Aalborg',
+        '2': 'Aarhus',
+        '3': 'Brondby',
+        '4': 'Esbjerg',
+        '5': 'FC Copenhagen',
+        '6': 'Helsingor',
+        '7': 'Hobro',
+        '8': 'Horsens',
+        '9': 'Lyngby',
+        '10': 'Midtjylland',
+        '11': 'Nordsjaelland',
+        '12': 'Odense',
+        '13': 'Randers FC',
+        '14': 'Silkeborg',
+        '15': 'Sonderjyske',
+        '16': 'Vejle',
+        '17': 'Vendsyssel',
+        '18': 'Vestsjaelland',
+        '19': 'Viborg'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/new/DNK.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in denmark_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = denmark_teams[homeChoice]
+    awayTeam = denmark_teams[awayChoice]
+
+    # assign teams the object value within the dictionary
+    goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
+        columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
+        df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
+        columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# ENGLAND
+
+
+def england():
+    leagues = {
+        '1': 'Premier League',
+        '2': 'Championship League',
+        '3': 'League 1',
+        '4': 'League 2',
+        '5': 'Conference League'
+    }
+
+    # Choose which league to model
+    print("Please pick which league:\n")
+    for ref, league in leagues.items():
+        print(ref, ":", league)
+
+    leagueChoice = input("Enter League Number: ")
+
+    # Choose which file to download and teams associated with league to reduce memory usage
+    if leagueChoice == '1':
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/E0.csv".format(season_year), encoding='ISO-8859-1')
+
+        england_teams = {
+            '1': 'Arsenal',
+            '2': 'Bournemouth',
+            '3': 'Brighton',
+            '4': 'Burnley',
+            '5': 'Cardiff',
+            '6': 'Chelsea',
+            '7': 'Crystal Palace',
+            '8': 'Everton',
+            '9': 'Fulham',
+            '10': 'Huddersfield',
+            '11': 'Leicester',
+            '12': 'Liverpool',
+            '13': 'Man City',
+            '14': 'Man United',
+            '15': 'Newcastle',
+            '16': 'Southampton',
+            '17': 'Tottenham',
+            '18': 'Watford',
+            '19': 'West Ham',
+            '20': 'Wolves'
+        }
+    elif leagueChoice == '2':
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/E1.csv".format(season_year), encoding='ISO-8859-1')
+
+        england_teams = {
+            '1': 'Aston Villa',
+            '2': 'Birmingham',
+            '3': 'Blackburn',
+            '4': 'Bolton',
+            '5': 'Brentford',
+            '6': 'Bristol City',
+            '7': 'Derby',
+            '8': 'Hull',
+            '9': 'Ipswich',
+            '10': 'Leeds',
+            '11': 'Middlesbrough',
+            '12': 'Millwall',
+            '13': 'Norwich',
+            '14': 'Nott\'m Forest',
+            '15': 'Preston',
+            '16': 'QPR',
+            '17': 'Reading',
+            '18': 'Rotherham',
+            '19': 'Sheffield United',
+            '20': 'Sheffield Weds',
+            '21': 'Stoke',
+            '22': 'Swansea',
+            '23': 'West Brom',
+            '24': 'Wigan'
+        }
+    elif leagueChoice == '3':
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/E2.csv".format(season_year), encoding='ISO-8859-1')
+
+        england_teams = {
+            '1': 'Accrington',
+            '2': 'AFC Wimbledon',
+            '3': 'Barnsley',
+            '4': 'Blackpool',
+            '5': 'Bradford',
+            '6': 'Bristol Rvs',
+            '7': 'Burton',
+            '8': 'Charlton',
+            '9': 'Coventry',
+            '10': 'Doncaster',
+            '11': 'Fleetwood Town',
+            '12': 'Gillingham',
+            '13': 'Luton',
+            '14': 'Oxford',
+            '15': 'Peterboro',
+            '16': 'Plymouth',
+            '17': 'Portsmouth',
+            '18': 'Rochdale',
+            '19': 'Scunthorpe',
+            '20': 'Shrewsbury',
+            '21': 'Southend',
+            '22': 'Sunderland',
+            '23': 'Walsall',
+            '24': 'Wycombe'
+        }
+    elif leagueChoice == '4':
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/E3.csv".format(season_year), encoding='ISO-8859-1')
+
+        england_teams = {
+            '1': 'Bury',
+            '2': 'Cambridge',
+            '3': 'Carlisle',
+            '4': 'Cheltenham',
+            '5': 'Colchester',
+            '6': 'Crawley Town',
+            '7': 'Crewe',
+            '8': 'Exeter',
+            '9': 'Forest Green',
+            '10': 'Grimsby',
+            '11': 'Lincoln',
+            '12': 'Macclesfield',
+            '13': 'Mansfield',
+            '14': 'Milton Keynes Dons',
+            '15': 'Morecambe',
+            '16': 'Newport County',
+            '17': 'Northampton',
+            '18': 'Notts County',
+            '19': 'Oldham',
+            '20': 'Port Vale',
+            '21': 'Stevenage',
+            '22': 'Swindon',
+            '23': 'Tranmere',
+            '24': 'Yeovil'
+        }
+    else:
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/EC.csv".format(season_year), encoding='ISO-8859-1')
+
+        england_teams = {
+            '1': 'Aldershot',
+            '2': 'Barnet',
+            '3': 'Barrow',
+            '4': 'Boreham Wood',
+            '5': 'Braintree Town',
+            '6': 'Bromley',
+            '7': 'Chesterfield',
+            '8': 'Dag and Red',
+            '9': 'Dover Athletic',
+            '10': 'Eastleigh',
+            '11': 'Ebbsfleet',
+            '12': 'Fylde',
+            '13': 'Gateshead',
+            '14': 'Halifax',
+            '15': 'Harrogate',
+            '16': 'Hartlepool',
+            '17': 'Havant & Waterlooville',
+            '18': 'Leyton Orient',
+            '19': 'Maidenhead',
+            '20': 'Maidstone',
+            '21': 'Salford',
+            '22': 'Solihull',
+            '23': 'Sutton',
+            '24': 'Wrexham'
+        }
+
+    # Modify headers
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'HomeTeam',
+                               'AwayTeam', 'FTHG', 'FTAG', 'FTR']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in england_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = england_teams[homeChoice]
+    awayTeam = england_teams[awayChoice]
+
+    goal_model_data = pd.concat([df_calculate[['HomeTeam', 'AwayTeam', 'FTHG']].assign(home=1).rename(
+        columns={'HomeTeam': 'team', 'AwayTeam': 'opponent', 'FTHG': 'goals'}),
+        df_calculate[['AwayTeam', 'HomeTeam', 'FTAG']].assign(home=0).rename(
+        columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'FTAG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# FINLAND
+
+
+def finland():
+    finland_teams = {
+        '1': 'HIFK',
+        '2': 'HJK',
+        '3': 'Honka',
+        '4': 'Ilves',
+        '5': 'Inter Turku',
+        '6': 'KPV Kokkola',
+        '7': 'KuPS',
+        '8': 'Lahti',
+        '9': 'Mariehamn',
+        '10': 'PS Kemi',
+        '11': 'Rovaniemi',
+        '12': 'SJK',
+        '13': 'TPS',
+        '14': 'VPS'
+    }
+
+    df = pd.read_csv("http://www.football-data.co.uk/new/FIN.csv")
+
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'Home', 'Away', 'HG', 'AG', 'Res']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in finland_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = finland_teams[homeChoice]
+    awayTeam = finland_teams[awayChoice]
+
+    goal_model_data = pd.concat([df_calculate[['Home', 'Away', 'HG']].assign(home=1).rename(
+        columns={'Home': 'team', 'Away': 'opponent', 'HG': 'goals'}),
+        df_calculate[['Away', 'Home', 'AG']].assign(home=0).rename(
+        columns={'Away': 'team', 'Home': 'opponent', 'AG': 'goals'})])
+
+    calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
+
+# FRANCE
+
+
+def france():
+    leagues = {
+        '1': 'Le Championnat',
+        '2': 'Division 2'
+    }
+
+    # Choose which league to model
+    print("Please pick which league:\n")
+    for ref, league in leagues.items():
+        print(ref, ":", league)
+
+    leagueChoice = input("Enter League Number: ")
+
+    # Choose which file to download and teams associated with league to reduce memory usage
+    if leagueChoice == '1':
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/F1.csv".format(season_year), encoding='ISO-8859-1')
+
+        france_teams = {
+            '1': 'Amiens',
+            '2': 'Angers',
+            '3': 'Bordeaux',
+            '4': 'Caen',
+            '5': 'Dijon',
+            '6': 'Guingamp',
+            '7': 'Lille',
+            '8': 'Lyon',
+            '9': 'Marseille',
+            '10': 'Monaco',
+            '11': 'Montpellier',
+            '12': 'Nantes',
+            '13': 'Nice',
+            '14': 'Nimes',
+            '15': 'Paris SG',
+            '16': 'Reims',
+            '17': 'Rennes',
+            '18': 'St Etienne',
+            '19': 'Strasbourg',
+            '20': 'Toulouse'
+        }
+    else:
+        df = pd.read_csv(
+            "http://www.football-data.co.uk/mmz4281/{}/F2.csv".format(season_year), encoding='ISO-8859-1')
+
+        france_teams = {
+            '1': 'Ajaccio',
+            '2': 'Ajaccio GFCO',
+            '3': 'Auxerre',
+            '4': 'Beziers',
+            '5': 'Brest',
+            '6': 'Chateauroux',
+            '7': 'Clermont',
+            '8': 'Grenoble',
+            '9': 'Le Havre',
+            '10': 'Lens',
+            '11': 'Lorient',
+            '12': 'Metz',
+            '13': 'Nancy',
+            '14': 'Niort',
+            '15': 'Orleans',
+            '16': 'Paris FC',
+            '17': 'Red Star',
+            '18': 'Sochaux',
+            '19': 'Troyes',
+            '20': 'Valenciennes'
+        }
+
+    # Modify headers
+    df['Date'] = pd.to_datetime(df['Date'])
+    df_include = df[df['Date'].dt.year >= 2018]
+    df_calculate = df_include[['Date', 'HomeTeam',
+                               'AwayTeam', 'FTHG', 'FTAG', 'FTR']]
+
+    # print out all the teams
+    print("Please pick home and away team:\n")
+    for ref, team in france_teams.items():
+        print(ref, ":", team)
+
+    # input team
+    homeChoice = input("Home Team Number: ")
+    awayChoice = input("Away Team Number: ")
+
+    # assign teams the object value within the dictionary
+    homeTeam = france_teams[homeChoice]
+    awayTeam = france_teams[awayChoice]
+
+    goal_model_data = pd.concat([df_calculate[['HomeTeam', 'AwayTeam', 'FTHG']].assign(home=1).rename(
+        columns={'HomeTeam': 'team', 'AwayTeam': 'opponent', 'FTHG': 'goals'}),
+        df_calculate[['AwayTeam', 'HomeTeam', 'FTAG']].assign(home=0).rename(
+        columns={'AwayTeam': 'team', 'HomeTeam': 'opponent', 'FTAG': 'goals'})])
 
     calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data)
 
@@ -386,7 +825,7 @@ def calculate_model(df_calculate, homeTeam, awayTeam, goal_model_data):
     # print(poisson_model.summary())
     print("\n\nHome team: {}".format(home_team))
     print("Away team: {}".format(away_team))
-    #print(np.outer(np.array(team_pred[0]), np.array(team_pred[1])))
+    # print(np.outer(np.array(team_pred[0]), np.array(team_pred[1])))
     print("\nImplied Probability {} Wins: {:.2%}".format(homeTeam, homeWin))
     print("Implied Probability of Draw: {:.2%}".format(outcomeDraw))
     print("Implied Probability {} Wins: {:.2%}".format(awayTeam, awayWin))
@@ -451,11 +890,11 @@ menu_actions = {
     '2': austria,
     '3': belgium,
     '4': brazil,
-    # '5': china,
-    # '6': denmark,
-    # '7': england,
-    # '8': finland,
-    # '9': france,
+    '5': china,
+    '6': denmark,
+    '7': england,
+    '8': finland,
+    '9': france,
     # '10': germany,
     # '11': greece,
     # '12': ireland,
